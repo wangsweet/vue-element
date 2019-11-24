@@ -5,6 +5,7 @@ import store from './store'
 import echarts from "echarts";
 Vue.prototype.$echarts = echarts;
 import {
+  Drawer,
   Pagination,
   Dialog,
   Autocomplete,
@@ -86,6 +87,7 @@ import {
 
 Vue.use(Pagination);
 Vue.use(Dialog);
+Vue.use(Drawer);
 Vue.use(Autocomplete);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);

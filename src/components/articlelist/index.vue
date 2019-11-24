@@ -1,8 +1,9 @@
 <template>
-  <div>
-    <el-card class="box-card">
-      <div v-for="(item,index) in articlelist" :key="index" class="text item">*{{item.articleTitle}}</div>
-    </el-card>
+  <div >
+    <ul v-if="flag" class="box-card">
+      <li v-for="(item,index) in articlelist" :key="index" class="text item" @click="handlecontent(index)">*{{item.articleTitle}}</li>
+    </ul>
+    <div v-if="!flag" class="articlecontent" v-html="content"></div>
   </div>
 </template>
 
@@ -11,13 +12,21 @@ import {articlelist} from "@api/articlelist";
 export default {
   data(){
     return{
-      articlelist:[]
+      articlelist:[],
+      flag:true,
+      content:""
     }
   },
  async created () {
     let data=await articlelist(1,30);
     // console.log(data);
     this.articlelist=data.data.list;
+  },
+  methods: {
+    handlecontent(index){
+      this.content=this.articlelist[index].content;
+      this.flag=false
+    }
   }
 };
 </script>
@@ -32,10 +41,14 @@ export default {
     padding: 18px 0;
   }
 
-  .box-card {
-    width: 480px;
+  .box-card,.articlecontent{
+    width: 1114px;
+    background: #fff;
+    height: 100%;
   }
-  .box-card {
-    width: 1112px;
+.articlecontent{
+  text-indent: 28px;
+  font-size: 14px;
+  height: 580px;
 }
 </style>

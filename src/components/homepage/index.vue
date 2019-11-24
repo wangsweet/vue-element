@@ -203,7 +203,7 @@ export default {
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom: "5%",
           containLabel: true
         },
         xAxis: [
@@ -227,7 +227,7 @@ export default {
           {
             name: "直接访问",
             type: "bar",
-            barWidth: "60%",
+            barWidth: "70%",
             data: [76, 52, 200, 334]
           }
         ]
@@ -272,7 +272,7 @@ export default {
           {
             name: "直接访问",
             type: "bar",
-            barWidth: "40%",
+            barWidth: "50%",
             data: [8]
           }
         ]
@@ -355,10 +355,10 @@ export default {
   background: #f5f5f5f5;
 }
 #artsum > div > canvas {
-  top: -100;
-  left: -6;
-  height: 200;
-  font-size: 12;
+  top: -100px!important;
+  left: -6px!important;
+  height: 200px!important;
+  font-size: 12px;
 }
 .grid-content {
   height: 180px;
