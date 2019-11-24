@@ -16,7 +16,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="handleChange(true,scope.$index, tableData)" type="text" size="small">修改</el-button>
-          <el-drawer title="书籍修改" :visible.sync="drawer" size="50%" :append-to-body="true">
+          <el-dialog title="书籍修改" :visible.sync="drawer" size="50%" :append-to-body="true">
             <el-form ref="form" label-width="100px">
               <el-form-item label="书籍作者">
                 <el-input v-model="bookauth"></el-input>
@@ -49,7 +49,7 @@
                 <el-button @click="drawer = false">取消</el-button>
               </el-form-item>
             </el-form>
-          </el-drawer>
+          </el-dialog>
           <el-button
             type="text"
             size="small"
