@@ -1,24 +1,16 @@
 <template>
   <div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column
-        :prop="item.porp"
-        :label="item.label"
-        width="155"
-        v-for="(item,index) in data"
-        :key="index"
-        v-if="index < 5"
-      ></el-table-column>
-      <el-table-column 
-        :prop="item.porp"
-        :label="item.label"
-        width="155"
-        v-for="(item,index) in data"
-        :key="item.index"
-         v-if="index == 5"
-        >
+      <el-table-column prop="_id" label="书籍ID" width="200" height="100"></el-table-column>
+      <el-table-column prop="booksAuth" label="书籍作者" width="160" height="100"></el-table-column>
+      <el-table-column prop="booksName" label="书籍名称" width="180" height="100"></el-table-column>
+      <el-table-column prop="booksStatus" label="书籍状态" width="135" height="100"></el-table-column>
+
+      <el-table-column prop="booksPrice" label="书籍价格" sortable width="130" height="100"></el-table-column>
+      <el-table-column prop="booksLogo" label="图片路径" width="180" height="100">
+        <!--插入图片链接的代码-->
         <template slot-scope="scope">
-          <img width="90px" height="90px" :src="scope.row.booksLogo">
+          <img :src="scope.row.booksLogo" alt style="width: 90px;height:90px" />
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -53,8 +45,8 @@
               </el-upload>
 
               <el-form-item>
-                <el-button type="primary" @click="onSubmit">保存修改</el-button>
-                <el-button  @click="drawer = false">取消</el-button>
+                <el-button type="primary" @click="onSubmit(false)">保存修改</el-button>
+                <el-button @click="drawer = false">取消</el-button>
               </el-form-item>
             </el-form>
           </el-drawer>
@@ -70,20 +62,12 @@
 </template>
 
 <script>
-import { booklist, booklistdete,booklistchange } from "@api/booklist";
+import { booklist, booklistdete, booklistchange } from "@api/booklist";
 export default {
   name: "Booklist",
   data() {
     return {
-      data: [
-        { label: "书籍ID", porp: "_id" },
-        { label: "书籍作者", porp: "booksAuth" },
-        { label: "书籍名称", porp: "booksName" },
-        { label: "书籍状态", porp: "booksStatus" },
-        { label: "书籍价格", porp: "booksPrice" },
-        { label: "书籍Logo", porp: "booksLogo" }
-      ],
-      id:"",
+      id: "",
       drawer: false,
       tableData: [],
       bookauth: "",
@@ -93,12 +77,14 @@ export default {
       imageUrl: ""
     };
   },
-  async created() {
-    let data = await booklist(1, 20);
-    this.tableData = data.data.list;
-    // console.log(this.tableData);
+  created() {
+    this.handlebooklist();
   },
   methods: {
+    async handlebooklist() {
+      let data = await booklist(1, 20);
+      this.tableData = data.data.list;
+    },
     async deleteRow(index, rows) {
       let datas = await booklistdete(rows[index]._id);
       if (datas.data.status == 1) {
@@ -109,16 +95,16 @@ export default {
       }
       // console.log(rows[index]._id)
     },
-    async handleChange(drawer,index,rows){
-      this.drawer=drawer;
-      this.id=index;
-      this.bookauth=rows[index].booksAuth;
-      this.bookname=rows[index].booksName;
-      this.status=rows[index].booksStatus;
-      this.bookprice=rows[index].booksPrice;
-      this.imageUrl=rows[index].booksLogo;
+     handleChange(drawer, index, rows) {
+      this.drawer = drawer;
+      this.id = rows[index]._id;
+      this.bookauth = rows[index].booksAuth;
+      this.bookname = rows[index].booksName;
+      this.status = rows[index].booksStatus;
+      this.bookprice = rows[index].booksPrice;
+      this.imageUrl = rows[index].booksLogo;
     },
-    async onSubmit() {
+    async onSubmit(drawer) {
       let data = await booklistchange(
         this.bookauth,
         this.bookname,
@@ -129,6 +115,8 @@ export default {
       );
       if (data.data.status == 1) {
         alert(data.data.info);
+        this.handlebooklist();
+        this.drawer = drawer;
       } else {
         alert(data.data.info);
       }
@@ -180,5 +168,9 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.el-table .cell {
+  display: flex;
+  justify-content: center;
 }
 </style>
